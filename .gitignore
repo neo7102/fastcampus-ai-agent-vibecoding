@@ -4,6 +4,7 @@
 .env.*.local
 *.key
 *.pem
+.mcp.json
 
 # IDE and Editor
 .vscode/
