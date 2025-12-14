@@ -27,21 +27,39 @@ DATABASE_URL=postgresql://neondb_owner:npg_Rk1LrSXMqld9@ep-twilight-math-af4s6ie
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-### 2. 의존성 설치
+### 2. 데이터베이스 설정
+
+Neon PostgreSQL에서 다음 SQL 스크립트를 실행하여 테이블과 인덱스를 생성합니다:
+
+```bash
+# init_db.sql 파일 내용을 Neon 콘솔의 SQL Editor에서 실행
+```
+
+또는 psql을 사용하여 직접 실행:
+
+```bash
+psql $DATABASE_URL -f init_db.sql
+```
+
+### 3. 의존성 설치
 
 ```bash
 uv sync
 ```
 
-### 3. 데이터 로드
+### 4. 데이터 로드
 
 loan_products.json 파일을 데이터베이스에 로드하고 임베딩을 생성합니다:
 
 ```bash
+# 전체 데이터 로드 (시간이 오래 걸립니다)
 uv run python load_data.py
+
+# 또는 테스트용으로 일부만 로드 (예: 처음 10개)
+uv run python load_data.py 10
 ```
 
-이 과정은 시간이 걸릴 수 있습니다 (OpenAI API 호출).
+**주의:** 이 과정은 OpenAI API를 호출하므로 시간이 걸리고 비용이 발생할 수 있습니다.
 
 ## 사용법
 
@@ -94,6 +112,7 @@ search_app/
 ├── .env.example            # 환경 변수 템플릿
 ├── .gitignore              # Git 제외 파일
 ├── README.md               # 프로젝트 문서
+├── init_db.sql             # 데이터베이스 스키마 초기화 스크립트
 ├── load_data.py            # 데이터 로드 스크립트
 └── hybrid_search.py        # 하이브리드 검색 구현
 ```
